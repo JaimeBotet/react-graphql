@@ -1,39 +1,43 @@
 import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
+import { gql, useQuery } from '@apollo/client'
+import {Persons} from './Components/Persons'
+
+
+const ALL_PERSONS = gql`
+	query {
+		allPersons {
+			id
+			name
+			phone
+			address {
+				street
+				city
+			}
+		}
+	}
+`
 
 function App() {
-	useEffect(() => {
-		fetch('http://localhost:4000', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json'},
-			body: JSON.stringify({ query: `
-				query {
-					allPersons {
-						name
-						phone
-						address {
-							street
-						}
-					}
-				}
-			`})
-		})
-		.then( res => res.json())
-		.then(res => {
-			console.log(res.data)
-		})
-	}, [])
+	const {data, error, loading} = useQuery(ALL_PERSONS)
+	console.log(data)
 
+	if(error) return <span style='color: red'>{error}</span>
 	return (
 		<>
-		<div>
-			<a href="https://react.dev" target="_blank">
-			<img src={reactLogo} className="logo react" alt="React logo" />
-			</a>
-		</div>
-		<h1>GraphQL + React</h1>
+			<div>
+				<a href="https://react.dev" target="_blank">
+				<img src={reactLogo} className="logo react" alt="React logo" />
+				</a>
+			</div>
+			{
+				loading 
+				? <p>Loading...</p>
+				: <Persons persons={data?.allPersons} />
 
+			}
+			
 		</>
 	)
 }
