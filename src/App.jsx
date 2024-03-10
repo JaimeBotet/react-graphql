@@ -3,9 +3,10 @@ import reactLogo from './assets/react.svg'
 import './App.css'
 import { gql, useQuery } from '@apollo/client'
 import {Persons} from './Components/Persons'
+import { PersonForm } from './Components/PersonForm'
 
 
-const ALL_PERSONS = gql`
+export const ALL_PERSONS = gql`
 	query {
 		allPersons {
 			id
@@ -21,7 +22,6 @@ const ALL_PERSONS = gql`
 
 function App() {
 	const {data, error, loading} = useQuery(ALL_PERSONS)
-	console.log(data)
 
 	if(error) return <span style='color: red'>{error}</span>
 	return (
@@ -37,7 +37,7 @@ function App() {
 				: <Persons persons={data?.allPersons} />
 
 			}
-			
+			<PersonForm />
 		</>
 	)
 }
