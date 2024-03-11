@@ -1,31 +1,26 @@
-import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
-import { gql, useQuery } from '@apollo/client'
-import {Persons} from './Components/Persons'
+import { Persons } from './Components/Persons'
 import { PersonForm } from './Components/PersonForm'
-
-
-export const ALL_PERSONS = gql`
-	query {
-		allPersons {
-			id
-			name
-			phone
-			address {
-				street
-				city
-			}
-		}
-	}
-`
+import { Notify } from './Components/Notify'
+import { usePersons } from './persons/custom-hooks'
+import { useState } from 'react'
+import { PhoneForm } from './Components/PhoneForm'
 
 function App() {
-	const {data, error, loading} = useQuery(ALL_PERSONS)
+	const {data, error, loading} = usePersons()
+	const [errorMessage, setErrorMessage] = useState(null)
 
 	if(error) return <span style='color: red'>{error}</span>
+
+	const notifyError = message => {
+		setErrorMessage(message)
+		setTimeout(()=> setErrorMessage(null), 5000)
+	}
+
 	return (
 		<>
+		<Notify errorMessage={errorMessage} />
 			<div>
 				<a href="https://react.dev" target="_blank">
 				<img src={reactLogo} className="logo react" alt="React logo" />
@@ -37,7 +32,8 @@ function App() {
 				: <Persons persons={data?.allPersons} />
 
 			}
-			<PersonForm />
+			<PhoneForm notifyError={notifyError} />
+			<PersonForm notifyError={notifyError} />
 		</>
 	)
 }
