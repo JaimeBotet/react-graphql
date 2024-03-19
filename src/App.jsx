@@ -8,7 +8,6 @@ import { useState } from 'react'
 import { PhoneForm } from './Components/PhoneForm'
 import { LoginForm } from './Components/LoginForm'
 import { Logout } from './Components/Logout'
-import { ALL_PERSONS } from './persons/graphql-queries'
 
 function App() {
 	const {data, error, loading} = usePersons()

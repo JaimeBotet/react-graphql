@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
-import { ApolloClient, ApolloProvider, gql, HttpLink, InMemoryCache } from '@apollo/client'
+import { ApolloClient, ApolloProvider, HttpLink, InMemoryCache } from '@apollo/client'
 
 const getAuth = () => {
 	const token = localStorage.getItem('phonenumbers-users-token')
